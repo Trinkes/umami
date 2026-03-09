@@ -22,6 +22,8 @@ proxy:
   ssl: true
   host: umami.trinkes.pt
   app_port: 3000
+  healthcheck:
+    path: /
 
 accessories:
   postgres:
