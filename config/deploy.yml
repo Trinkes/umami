@@ -1,0 +1,45 @@
+service: umami
+image: trinkes/umami
+
+servers:
+  web:
+    hosts:
+      - 49.13.143.182
+
+ssh:
+  user: kamal
+
+builder:
+  arch: amd64
+
+registry:
+  server: ghcr.io
+  username: trinkes
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+proxy:
+  ssl: true
+  host: umami.trinkes.pt
+  app_port: 3000
+
+accessories:
+  postgres:
+    image: postgres:15-alpine
+    host: 49.13.143.182
+    env:
+      clear:
+        POSTGRES_DB: umami
+        POSTGRES_USER: umami
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - umami-pg-data:/var/lib/postgresql/data
+
+env:
+  secret:
+    - DATABASE_URL
+    - APP_SECRET
+
+deploy_timeout: 60
+retain_containers: 1
